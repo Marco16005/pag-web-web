@@ -294,7 +294,7 @@ async function fetchAndDisplayIndexLeaderboard() {
     const indexLeaderboardList = document.getElementById('index-leaderboard-list');
     if (!indexLeaderboardList) return; // Only run if the element exists on the current page
 
-    indexLeaderboardList.innerHTML = '<li class="flex justify-between items-center"><span class="font-semibold pixel-font" style="color: #f0f0f0;">Loading leaderboard...</span></li>';
+    indexLeaderboardList.innerHTML = '<li class="flex justify-between items-center"><span class="font-semibold pixel-font" style="color:rgb(0, 0, 0);">Loading leaderboard...</span></li>';
     try {
         const response = await fetch(`${window.API_URL}/leaderboard/global`);
         if (!response.ok) {
@@ -304,20 +304,20 @@ async function fetchAndDisplayIndexLeaderboard() {
 
         indexLeaderboardList.innerHTML = ''; // Clear loading message
         if (leaderboardData.length === 0) {
-            indexLeaderboardList.innerHTML = '<li class="flex justify-between items-center"><span class="font-semibold pixel-font" style="color: #f0f0f0;">Leaderboard is empty.</span></li>';
+            indexLeaderboardList.innerHTML = '<li class="flex justify-between items-center"><span class="font-semibold pixel-font" style="color:rgb(0, 0, 0);">Leaderboard is empty.</span></li>';
         } else {
             leaderboardData.forEach(player => {
                 const listItem = document.createElement('li');
                 listItem.className = 'flex justify-between items-center';
                 listItem.innerHTML = `
-                    <span class="font-semibold pixel-font" style="color: #f0f0f0;">${player.rank}. ${player.nombre_usuario}</span>
-                    <span class="pixel-font" style="color: #f0f0f0;">&nbsp;&nbsp;${player.puntuacion_total.toLocaleString()}</span>`;
+                    <span class="font-semibold pixel-font" style="color:rgb(0, 0, 0);">${player.rank}. ${player.nombre_usuario}</span>
+                    <span class="pixel-font" style="color:rgb(0, 0, 0);">&nbsp;&nbsp;${player.puntuacion_total.toLocaleString()}</span>`;
                 indexLeaderboardList.appendChild(listItem);
             });
         }
     } catch (error) {
       console.error('Failed to fetch index leaderboard:', error);
-        indexLeaderboardList.innerHTML = '<li class="flex justify-between items-center"><span class="font-semibold pixel-font" style="color: #f0f0f0;">Error loading leaderboard.</span></li>';
+        indexLeaderboardList.innerHTML = '<li class="flex justify-between items-center"><span class="font-semibold pixel-font" style="color:rgb(0, 0, 0);">Error loading leaderboard.</span></li>';
     }
 }
 
