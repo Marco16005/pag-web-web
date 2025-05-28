@@ -289,12 +289,45 @@ function setupLoginForm() {
   });
 }
 
+// ---------------- LEADERBOARD PARA INDEX.HTML ----------------
+async function fetchAndDisplayIndexLeaderboard() {
+    const indexLeaderboardList = document.getElementById('index-leaderboard-list');
+    if (!indexLeaderboardList) return; // Only run if the element exists on the current page
+
+    indexLeaderboardList.innerHTML = '<li class="flex justify-between items-center"><span class="font-semibold pixel-font" style="color: #f0f0f0;">Loading leaderboard...</span></li>';
+    try {
+        const response = await fetch(`${window.API_URL}/leaderboard/global`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const leaderboardData = await response.json();
+
+        indexLeaderboardList.innerHTML = ''; // Clear loading message
+        if (leaderboardData.length === 0) {
+            indexLeaderboardList.innerHTML = '<li class="flex justify-between items-center"><span class="font-semibold pixel-font" style="color: #f0f0f0;">Leaderboard is empty.</span></li>';
+        } else {
+            leaderboardData.forEach(player => {
+                const listItem = document.createElement('li');
+                listItem.className = 'flex justify-between items-center';
+                listItem.innerHTML = `
+                    <span class="font-semibold pixel-font" style="color: #f0f0f0;">${player.rank}. ${player.nombre_usuario}</span>
+                    <span class="pixel-font" style="color: #f0f0f0;">&nbsp;&nbsp;${player.puntuacion_total.toLocaleString()}</span>`;
+                indexLeaderboardList.appendChild(listItem);
+            });
+        }
+    } catch (error) {
+      console.error('Failed to fetch index leaderboard:', error);
+        indexLeaderboardList.innerHTML = '<li class="flex justify-between items-center"><span class="font-semibold pixel-font" style="color: #f0f0f0;">Error loading leaderboard.</span></li>';
+    }
+}
+
 // ---------------- INICIALIZACIÓN GENERAL ----------------
 
 document.addEventListener('DOMContentLoaded', () => {
   // updateNavbar();
   setupRegisterForm();
   setupLoginForm();
+  fetchAndDisplayIndexLeaderboard();
 });
 
 // This function will be called by header.js after loading any header content
