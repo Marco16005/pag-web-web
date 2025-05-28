@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Lab - Contact Us</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="../assets/images/favicon.png">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/styler.css">
+    <link rel="stylesheet" href="../assets/css/chatWidget.css"> 
+</head>
+<body class="bg-gray-900 text-white font-sans">
+    <div id="header-placeholder"></div>
+    <main>
+        <section id="contact-us" class="py-8 marg">
+            <div class="container mx-auto px-4">
+                <h2 class="text-4xl font-bold mb-8 text-center pixel-font" style="color: #000;">Contact Us</h2>
+                <div class="form-card">
+                    <h2 style="color: #000">Do you have doubts or comments?</h2>
+                    <div id="form-response" style="margin-bottom: 1rem; padding: 0.75rem; border-radius: 4px; display: none;"></div>
+                    <form id="contact-form" style="color: #000;">
+                        <div class="form-group">
+                            <label for="name">Full name</label>
+                            <input type="text" id="name" name="name" required placeholder="Your name here">
+                            <small class="error-message" style="display:none;"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required placeholder="yourmail@example.com">
+                            <small class="error-message" style="display:none;"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="5" required placeholder="What can we help you in?"></textarea>
+                            <small class="error-message" style="display:none;"></small>
+                        </div>
+                        <button type="submit" class="btn-primary full-width">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+    <div id="footer-placeholder"></div>
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/script.js"></script>
+    <script src="../assets/js/validation.js"></script>
+    <script src="../assets/js/recycled/header.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const contactForm = document.getElementById('contact-form');
+            const formResponseDiv = document.getElementById('form-response');
+            const API_URL = window.API_URL || 'http://localhost:3000/api'; // Ensure API_URL is defined
+
+            if (contactForm) {
+                contactForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    formResponseDiv.style.display = 'none';
+                    formResponseDiv.textContent = '';
+                    formResponseDiv.className = ''; // Reset classes
+
+                    const nameInput = document.getElementById('name');
+                    const emailInput = document.getElementById('email');
+                    const messageInput = document.getElementById('message');
+
+                    // Clear previous errors
+                    if (window.clearError) {
+                        window.clearError(nameInput);
+                        window.clearError(emailInput);
+                        window.clearError(messageInput);
+                    }
+
+                    const name = nameInput.value.trim();
+                    const email = emailInput.value.trim();
+                    const message = messageInput.value.trim();
+                    let isValid = true;
+
+                    if (!name) {
+                        if(window.showError) window.showError(nameInput, "Full name is required.");
+                        isValid = false;
+                    }
+                    if (!email) {
+                        if(window.showError) window.showError(emailInput, "Email is required.");
+                        isValid = false;
+                    } else if (window.validateEmail && !window.validateEmail(email)) {
+                        if(window.showError) window.showError(emailInput, "Please enter a valid email address.");
+                        isValid = false;
+                    }
+                    
+                    const minMessageLength = 10;
+                    const maxMessageLength = 5000; // Matches backend validation
+
+                    if (!message) {
+                        if(window.showError) window.showError(messageInput, "Message is required.");
+                        isValid = false;
+                    } else if (message.length < minMessageLength) {
+                        if(window.showError) window.showError(messageInput, `Message must be at least ${minMessageLength} characters long.`);
+                        isValid = false;
+                    } else if (message.length > maxMessageLength) {
+                        if(window.showError) window.showError(messageInput, `Message cannot exceed ${maxMessageLength} characters.`);
+                        isValid = false;
+                    }
+
+                    if (!isValid) return;
+
+                    try {
+                        const response = await fetch(`${API_URL}/contact`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ name, email, message })
+                        });
+                        const data = await response.json();
+
+                        formResponseDiv.style.display = 'block';
+                        formResponseDiv.textContent = data.message;
+
+                        if (response.ok) {
+                            formResponseDiv.style.backgroundColor = '#d4edda'; 
+                            formResponseDiv.style.color = '#155724';
+                            contactForm.reset(); 
+                        } else {
+                            formResponseDiv.style.backgroundColor = '#f8d7da'; 
+                            formResponseDiv.style.color = '#721c24';
+                        }
+                    } catch (error) {
+                        console.error('Contact form submission error:', error);
+                        formResponseDiv.style.display = 'block';
+                        formResponseDiv.textContent = 'An error occurred. Please try again later.';
+                        formResponseDiv.style.backgroundColor = '#f8d7da';
+                        formResponseDiv.style.color = '#721c24';
+                    }
+                });
+            }
+        });
+    </script>
+    <script src="../assets/js/chatWidget.js"></script>
+</body>
+</html>

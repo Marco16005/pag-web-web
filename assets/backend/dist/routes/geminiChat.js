@@ -1,0 +1,95 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const axios_1 = __importDefault(require("axios"));
+const router = express_1.default.Router();
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
+const SITE_OVERVIEW_CONTEXT = `
+Campus Chaos is a web-based game project.
+The main features and sections of the website include:
+- Homepage (index.html): Displays a welcome message, a carousel of game images, and general information about the game.
+- About Us (about-us.html): Provides details about the development team, the project's mission, and contact information.
+- Login/Registration (login.html, register.html): Allows users to create new accounts or sign in to existing ones.
+- User Profile (profile.html): Registered users can view and manage their profile information, game statistics, and potentially update their password.
+- Leaderboard: A section (likely dynamically generated or on a specific page) to display top player scores and rankings.
+- The game itself is the core interactive element, where users play "Campus Chaos".
+The chat widget is available on all pages to assist users.
+`.trim();
+router.post('/chat-gemini', async (req, res, next) => {
+    const userMessage = req.body.message;
+    const pageContext = req.body.pageContext;
+    if (!GEMINI_API_KEY) {
+        console.error('Gemini API key is not configured.');
+        res.status(500).json({ error: 'AI service is not configured correctly. Missing API Key.' });
+        return;
+    }
+    if (!userMessage) {
+        res.status(400).json({ error: 'No message provided.' });
+        return;
+    }
+    // Get the current date
+    const today = new Date();
+    const currentDateString = today.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    // Construct the message for the AI, including general site overview and specific page context
+    let messageForAI = `General Site Overview: "${SITE_OVERVIEW_CONTEXT}".\n`; // Add general site overview
+    messageForAI += `Current Date Context: Today is ${currentDateString}.\n`;
+    if (pageContext && pageContext.trim() !== "") {
+        messageForAI += `Current Page Context: The user is currently viewing a page with the following information: "${pageContext}".\n`;
+    }
+    messageForAI += `User question: "${userMessage}"`;
+    const payload = {
+        contents: [
+            {
+                parts: [
+                    {
+                        text: messageForAI
+                    }
+                ]
+            }
+        ]
+    };
+    try {
+        const response = await axios_1.default.post(GEMINI_API_URL, payload, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        if (response.data.candidates && response.data.candidates.length > 0) {
+            const aiText = response.data.candidates[0].content.parts[0].text;
+            res.json({ reply: aiText });
+        }
+        else if (response.data.promptFeedback && response.data.promptFeedback.blockReason) {
+            console.warn('Gemini prompt blocked:', response.data.promptFeedback.blockReason);
+            const blockReason = response.data.promptFeedback.blockReason;
+            const safetyRatings = response.data.promptFeedback.safetyRatings?.map((r) => `${r.category} was ${r.probability}`).join(', ') || 'No specific ratings.';
+            // Provide a more user-friendly message about content policy
+            let userFriendlyMessage = `I cannot respond to that due to content policy (Reason: ${blockReason}).`;
+            if (blockReason === "SAFETY" && safetyRatings) {
+                userFriendlyMessage = `I cannot respond to that as it may violate safety guidelines. (Details: ${safetyRatings})`;
+            }
+            else if (blockReason === "OTHER") {
+                userFriendlyMessage = `I cannot respond to that due to content restrictions.`;
+            }
+            res.status(400).json({ reply: userFriendlyMessage });
+        }
+        else {
+            console.error('No candidates found in Gemini response or unexpected response structure:', response.data);
+            res.status(500).json({ reply: "Sorry, I couldn't get a proper response from the AI." });
+        }
+    }
+    catch (error) {
+        console.error('Error calling Gemini API:', error.response ? error.response.data : error.message);
+        if (error.response && error.response.data && error.response.data.error) {
+            const errData = error.response.data.error;
+            res.status(errData.code || 500).json({ reply: `AI Error: ${errData.message}` });
+        }
+        else {
+            res.status(500).json({ reply: 'An error occurred while communicating with the AI service.' });
+        }
+    }
+});
+exports.default = router;

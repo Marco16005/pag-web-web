@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Lab - Sign In</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="shortcut icon" href="../assets/images/favicon.png">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/styler.css">
+  <link rel="stylesheet" href="../assets/css/chatWidget.css">
+
+</head>
+
+<body class="singup-page">
+  <canvas id="background-canvas"></canvas>
+<div id="header-placeholder"></div>
+  <main>
+    <section id="login"  class="py-8 marg">
+      <div class="container justify-center items-center" >
+        <div class="bg-gray-800 p-8 rounded-md w-full form-card">
+          <h2 class="text-center" >Sign up</h2>
+          <form id="register-form">
+            <div class="mb-4 form-group">
+              <label for="fullname" class="block text-sm font-bold mb-2 siz">Full name</label>
+              <input type="text" id="fullname" name="fullname" required placeholder="Jorge Sanchez" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
+            <div class="mb-4 form-group">
+              <label for="gender" class="block text-sm font-bold mb-2 siz">Gender</label>
+              <select id="gender" name="gender" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <option value="" disabled selected>Select your gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+                <option value="prefer_not_to_say">Prefer not to say</option>
+              </select>
+              <small class="error-message" style="display:none;"></small>
+            </div>
+            <div class="mb-4 form-group">
+              <label for="birthdate" class="block text-sm font-bold mb-2 siz">Birth Date</label>
+              <input type="date" id="birthdate" name="birthdate" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+              <small class="error-message" style="display:none;"></small>
+            </div>
+            <div class="mb-4 form-group">
+              <label for="email" class="block text-sm font-bold mb-2 siz">Email</label>
+              <input type="email" id="email" name="email" required placeholder="email@example.com" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+              <small class="error-message" style="display:none;"></small>
+            </div>
+            <div class="mb-4 form-group">
+              <label for="password" class="block text-sm font-bold mb-2 siz">Password</label>
+              <input type="password" id="password" name="password" required placeholder="Password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+              <small class="error-message" style="display:none;"></small>
+              <div id="password-criteria" class="mt-2 text-sm">
+                <ul class="list-none p-0">
+                  <li id="length-criterion" class="criterion">At least 8 characters</li>
+                  <li id="lowercase-criterion" class="criterion">At least one lowercase letter</li>
+                  <li id="uppercase-criterion" class="criterion">At least one uppercase letter</li>
+                  <li id="number-criterion" class="criterion">At least one number</li>
+                  <li id="special-criterion" class="criterion">At least one special character (@$!%*?&)</li>
+                </ul>
+              </div>
+            </div>
+            <div class="mb-4 form-group">
+              <label for="confirm-password" class="block text-sm font-bold mb-2 siz">Confirm password</label>
+              <input type="password" id="confirm-password" name="confirm-password" required placeholder="Password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+              <small class="error-message" style="display:none;"></small>
+            </div>
+            <button type="submit" class="btn-primary full-width">Create</button>
+            <p class="text-center mt-4">Already have an account? <a href="login.html" style="color: #d3a649;">Log in here</a></p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer-placeholder"></div>
+  <script src="https://unpkg.com/scrollreveal"></script>
+  <script src="../assets/js/main.js"></script>
+  <script src="../assets/js/recycled/header.js"></script>
+  <script src="../assets/js/script.js"></script>
+  <script src="../assets/js/validation.js"></script>
+  <script src="../assets/js/chatWidget.js"></script>
+</body>
+</html>

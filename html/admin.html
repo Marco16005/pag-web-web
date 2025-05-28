@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campus Chaos - Admin Panel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="shortcut icon" href="../assets/images/favicon.png">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../assets/css/styler.css">
+  <link rel="stylesheet" href="../assets/css/chatWidget.css"> 
+</head>
+
+<body class="admin-page-body">
+
+<canvas id="background-canvas"></canvas>
+<div id="header-placeholder"></div>
+
+<section class="hero small-hero marg">
+  <div class="hero-overlay"></div>
+  <div class="hero-content container">
+    <h1 class="pixel-title">Admin Panel</h1>
+  </div>
+</section>
+
+<main class="section container marg1" style="padding-top: 1rem; padding-bottom: 1rem;">
+  <div class="admin-top-panel">
+    <div class="admin-welcome-message"> 
+      <h2>Welcome, <span id="nombre-admin">Admin</span> 👑</h2>
+      <p>Use the navigation bar below to manage different aspects of the game.</p>
+    </div>
+
+    <!-- Admin Navigation Bar -->
+    <nav class="admin-nav-bar">
+      <a href="#" class="admin-nav-link" data-target="usersContainer">Manage Users</a>
+      <a href="#" class="admin-nav-link" data-target="statisticsContainer">View Statistics</a>
+      <a href="#" class="admin-nav-link" data-target="contactMessagesContainer">Contact Messages</a>
+      <a href="#" class="admin-nav-link" data-target="logsContainer">System Logs</a>
+    </nav>
+  </div> <!-- End of admin-top-panel -->
+
+  <!-- Container for Users Table -->
+  <div id="usersContainer" class="admin-data-container" style="display: none; ">
+    <h3 class="pixel-font text-center">User Management</h3>
+    <table id="usersTable" class="data-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Registered</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- User data will be populated here -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Container for Statistics Table -->
+  <div id="statisticsContainer" class="admin-data-container" style="display: none;">
+    <h3 class="pixel-font text-center">Game Statistics</h3>
+    <table id="statisticsTable" class="data-table">
+      <thead>
+        <tr>
+          <th>User ID</th>
+          <th>Username</th>
+          <th>Missions Completed</th>
+          <th>Objects Obtained</th>
+          <th>Enemies Neutralized</th>
+          <th>Total Playtime (sec)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Statistics data will be populated here -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Container for Contact Messages Table -->
+  <div id="contactMessagesContainer" class="admin-data-container" style="display: none; ">
+    <h3 class="pixel-font text-center">Contact Form Messages</h3>
+    <table id="contactMessagesTable" class="data-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Message</th>
+          <th>Date</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Contact messages will be populated here -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Container for System Logs (Bitacora) -->
+  <div id="logsContainer" class="admin-data-container" style="display: none;">
+    <h3 class="pixel-font text-center">System Logs (Bitacora)</h3>
+    <table id="logsTable" class="data-table">
+      <thead>
+        <tr>
+          <th>Log ID</th>
+          <th>Table</th>
+          <th>Record ID</th>
+          <th>User/System</th>
+          <th>Screen/Process</th>
+          <th>Action Description</th>
+          <th>Operation</th>
+          <th>Date</th>
+          <th>Status</th>
+          <th>Old Data</th>
+          <th>New Data</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Log data will be populated here -->
+      </tbody>
+    </table>
+  </div>
+
+</main>
+
+<div id="editUserModal" class="modal" style="display:none;">
+  <div class="modal-content form-card" style="max-width: 500px; margin: 10% auto; background: white; color: #333;">
+    <span class="close-modal-btn" id="closeEditUserModal" style="float: right; font-size: 1.5rem; cursor: pointer;">&times;</span>
+    <h3 class="pixel-font text-center" style="color: #333; margin-bottom: 1.5rem;">Edit User</h3>
+    <form id="editUserForm">
+      <input type="hidden" id="editUserId" name="id_usuario">
+      <div class="form-group">
+        <label for="editUserName">Username:</label>
+        <input type="text" id="editUserName" name="nombre_usuario" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+      </div>
+      <div class="form-group">
+        <label for="editUserEmail">Email:</label>
+        <input type="email" id="editUserEmail" name="correo" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+      </div>
+      <div class="form-group">
+        <label for="editUserRol">Role:</label>
+        <select id="editUserRol" name="rol" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          <option value="user">User</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+      <button type="submit" class="btn-primary full-width" style="margin-top: 1.5rem;">Save Changes</button>
+    </form>
+  </div>
+</div>
+
+<!-- Modal for Log Details -->
+<div id="logDetailModal" class="modal" style="display:none;">
+  <div class="modal-content form-card" style="max-width: 700px; margin: 10% auto; background: white; color: #333;">
+    <span class="close-modal-btn" id="closeLogDetailModal" style="float: right; font-size: 1.5rem; cursor: pointer;">&times;</span>
+    <h3 class="pixel-font text-center" style="color: #333; margin-bottom: 1.5rem;">Log Action Details</h3>
+    <div id="logDetailContent" style="white-space: pre-wrap; word-wrap: break-word; max-height: 400px; overflow-y: auto; background-color: #f8f9fa; padding: 10px; border-radius: 5px; border: 1px solid #e0e0e0;">
+      <!-- Full log description will be inserted here -->
+    </div>
+  </div>
+</div>
+
+<div id="footer-placeholder"></div>
+  <script src="https://unpkg.com/scrollreveal"></script>
+  <script src="../assets/js/main.js"></script>
+  <script src="../assets/js/recycled/header.js"></script>
+  <script src="../assets/js/admin.js"></script> 
+  <script src="../assets/js/chatWidget.js"></script>
+</body>
+</html>

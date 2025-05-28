@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Lab -  Profile</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="shortcut icon" href="../assets/images/favicon.png">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../assets/css/styler.css">
+  <link rel="stylesheet" href="../assets/css/chatWidget.css">
+</head>
+
+<body class="profile-page-body">
+
+<canvas id="background-canvas"></canvas>
+<div id="header-placeholder"></div>
+
+
+<section class="hero small-hero marg">
+  <div class="hero-overlay"></div>
+  <div class="hero-content container">
+    <h1 class="pixel-title">My Profile</h1>
+  </div>
+</section>
+
+<section class="section containerb marg1">
+  <div class="form-card">
+    <h2>Welcome, <span id="nombre-usuario">User</span> 👤</h2>
+    <p><strong>Email:</strong> <span id="correo-usuario"></span></p>
+    <button onclick="logoutUser()" class="btn-primary full-width" style="margin-top:2rem;">Log out</button>
+  </div>
+
+  <div class="form-card text-center" style="padding: 3rem; margin-bottom: 5rem; margin-top: 3rem; line-height: 1.5;">
+    <h3 class="text-2xl mb-4 pixel-font">Global Leaderboard</h3>
+    <ol class="bg-gray-800 rounded-md p-4 space-y-2 leaderboard-list">
+        <!-- Static items will be replaced by JavaScript -->
+        <li class="flex justify-between items-center"><span class="font-semibold pixel-font">Loading...</span> <span class="pixel-font"></span></li>
+    </ol>
+    <div class="mt-4 bg-gray-800 rounded-md p-4">
+        <p class="pixel-font">YOUR SCORE: <span id="user-score-value" class="font-semibold">Loading...</span></p> 
+    </div>
+  </div>
+
+  <div id="download-game-section" class="form-card text-center" style="padding: 3rem; margin-bottom: 5rem; margin-top: 3rem;">
+    <h3 class="text-2xl mb-4 pixel-font">Download Game</h3>
+    <p class="mb-4" style="font-family: Arial, sans-serif;">Get the latest version of Campus Chaos and start your adventure!</p>
+    <a href="path/to/your/game.exe" download="CampusChaos.exe" class="btn-primary" style="text-decoration: none;">
+      Download CampusChaos.exe
+    </a>
+    <p class="text-sm mt-4" style="font-family: Arial, sans-serif;">(Version 1.0 - Windows)</p>
+  </div>
+</section>
+
+
+  <div id="footer-placeholder"></div>
+  <script src="https://unpkg.com/scrollreveal"></script>
+  <script src="../assets/js/main.js"></script>
+  <script src="../assets/js/recycled/header.js"></script>
+  <script src="../assets/js/script.js"></script>
+
+<script>
+// Mostrar datos del usuario en el perfil
+document.addEventListener('DOMContentLoaded', async () => { // Made async
+  const userData = JSON.parse(localStorage.getItem('user'));
+  if (!userData) {
+    alert("You must be logged in to view your profile.");
+    window.location.href = "login.html";
+    return;
+  }
+
+  const nombreUsuarioElement = document.getElementById('nombre-usuario');
+  if (nombreUsuarioElement) {
+    nombreUsuarioElement.textContent = userData.nombre || "User"; 
+  }
+  const correoUsuarioElement = document.getElementById('correo-usuario');
+  if (correoUsuarioElement) {
+    correoUsuarioElement.textContent = userData.correo || "No email available";
+  }
+
+  // Fetch and display leaderboard and user score
+  const leaderboardList = document.querySelector('.leaderboard-list');
+  const userScoreElement = document.getElementById('user-score-value');
+
+  async function fetchLeaderboard() {
+    if (!leaderboardList) return;
+    leaderboardList.innerHTML = '<li class="flex justify-between items-center"><span class="font-semibold pixel-font">Loading leaderboard...</span></li>'; // Clear and set loading
+    try {
+      const response = await fetch(`${API_URL}/leaderboard/global`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const leaderboardData = await response.json();
+      
+      leaderboardList.innerHTML = ''; // Clear loading message
+      if (leaderboardData.length === 0) {
+        leaderboardList.innerHTML = '<li class="flex justify-between items-center"><span class="font-semibold pixel-font">Leaderboard is empty.</span></li>';
+      } else {
+        leaderboardData.forEach(player => {
+          const listItem = document.createElement('li');
+          listItem.className = 'flex justify-between items-center';
+          listItem.innerHTML = `
+            <span class="font-semibold pixel-font">${player.rank}. ${player.nombre_usuario}</span> 
+            <span class="pixel-font">&nbsp;&nbsp;${player.puntuacion_total.toLocaleString()}</span>`;
+          leaderboardList.appendChild(listItem);
+        });
+      }
+    } catch (error) {
+      console.error('Failed to fetch leaderboard:', error);
+      leaderboardList.innerHTML = '<li class="flex justify-between items-center"><span class="font-semibold pixel-font">Error loading leaderboard.</span></li>';
+    }
+  }
+
+  async function fetchUserScore() {
+    if (!userScoreElement || !userData.id) return;
+    userScoreElement.textContent = 'Loading...';
+    try {
+      const response = await fetch(`${API_URL}/leaderboard/user/${userData.id}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const scoreData = await response.json();
+      userScoreElement.textContent = (scoreData.puntuacion_total !== null && scoreData.puntuacion_total !== undefined) 
+                                      ? `${scoreData.puntuacion_total.toLocaleString()} points` 
+                                      : 'N/A';
+    } catch (error) {
+      console.error('Failed to fetch user score:', error);
+      userScoreElement.textContent = 'Error';
+    }
+  }
+
+   // Call the functions
+  fetchLeaderboard();
+  fetchUserScore();
+
+});
+</script>
+<script src="../assets/js/chatWidget.js"></script>
+
+</body>
+</html>
