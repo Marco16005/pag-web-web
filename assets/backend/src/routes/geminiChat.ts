@@ -85,12 +85,24 @@ router.post('/chat-gemini', async (
     const currentDateString = today.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
     // Construct the message for the AI, including general site overview and specific page context
-    let messageForAI = `General Site Overview: "${SITE_OVERVIEW_CONTEXT}".\n`; // Add general site overview
-    messageForAI += `Current Date Context: Today is ${currentDateString}.\n`;
+    const instructionToAI = `You are the Campus Chaos AI assistant.
+Your primary goal is to provide a direct, concise, and factual answer to the user's question.
+STRICTLY ADHERE TO THE FOLLOWING:
+1.  Do NOT include any conversational fluff, introductory/closing phrases (e.g., "Sure, I can help", "Okay, here's the information", "I hope this helps").
+2.  Do NOT explain your reasoning process or how you arrived at the answer.
+3.  Provide ONLY the direct answer to the user's question.
+4.  Wrap your final, direct answer within <answer_text_only> XML-like tags. For example: <answer_text_only>The game is available on Windows.</answer_text_only>
+If you cannot answer or if the question violates policy, respond with a brief, policy-compliant statement within the <answer_text_only> tags (e.g., <answer_text_only>I cannot answer that question due to content policy.</answer_text_only>).
+Failure to use these tags correctly or including any text outside these tags will be considered a deviation from instructions.
+`;
+
+   let contextForAI = `General Site Overview: "${SITE_OVERVIEW_CONTEXT}".\n`;
+    contextForAI += `Current Date Context: Today is ${currentDateString}.\n`;
     if (pageContext && pageContext.trim() !== "") {
-        messageForAI += `Current Page Context: The user is currently viewing a page with the following information: "${pageContext}".\n`;
+        contextForAI += `Current Page Context: The user is currently viewing a page with the following information: "${pageContext}".\n`;
     }
-    messageForAI += `User question: "${userMessage}"`;
+    
+    const messageForAI = instructionToAI + contextForAI + `User question: "${userMessage}"`;
 
     const payload: GeminiRequestPayload = {
         contents: [
@@ -112,8 +124,17 @@ router.post('/chat-gemini', async (
         });
 
         if (response.data.candidates && response.data.candidates.length > 0) {
-            const aiText = response.data.candidates[0].content.parts[0].text;
-            res.json({ reply: aiText });
+            const rawAiText = response.data.candidates[0].content.parts[0].text;
+            const match = rawAiText.match(/<answer_text_only>([\s\S]*?)<\/answer_text_only>/);
+            
+            let processedReply = rawAiText;
+
+            if (match && match[1] && match[1].trim() !== "") {
+                processedReply = match[1].trim();
+            } else {
+                console.warn(`AI response did not use <answer_text_only> tags correctly or content was empty. User question: "${userMessage}". Raw AI response: "${rawAiText}"`);
+            }
+            res.json({ reply: processedReply });
         } else if (response.data.promptFeedback && response.data.promptFeedback.blockReason) {
             console.warn('Gemini prompt blocked:', response.data.promptFeedback.blockReason);
             const blockReason = response.data.promptFeedback.blockReason;
