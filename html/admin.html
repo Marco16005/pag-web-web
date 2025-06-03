@@ -37,7 +37,8 @@
       <a href="#" class="admin-nav-link" data-target="usersContainer">Manage Users</a>
       <a href="#" class="admin-nav-link" data-target="statisticsContainer">View Statistics</a>
       <a href="#" class="admin-nav-link" data-target="contactMessagesContainer">Contact Messages</a>
-      <a href="#" class="admin-nav-link" data-target="logsContainer">System Logs</a>
+      <a href="#" class="admin-nav-link" data-target="logsContainer">System Logs (SP)</a>
+      <a href="#" class="admin-nav-link" data-target="logViewContainer">System Logs (View)</a>
     </nav>
   </div> <!-- End of admin-top-panel -->
 
@@ -123,6 +124,31 @@
       </thead>
       <tbody>
         <!-- Log data will be populated here -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Container for System Logs (Bitacora) via View -->
+  <div id="logViewContainer" class="admin-data-container" style="display: none;">
+    <h3 class="pixel-font text-center">System Logs (Fetched via View)</h3>
+    <table id="logViewTable" class="data-table">
+      <thead>
+        <tr>
+          <th>Log ID</th>
+          <th>Table</th>
+          <th>Record ID</th>
+          <th>User/System</th>
+          <th>Screen/Process</th>
+          <th>Action Description</th>
+          <th>Operation</th>
+          <th>Date</th>
+          <th>Status</th>
+          <th>Old Data</th>
+          <th>New Data</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Log view data will be populated here -->
       </tbody>
     </table>
   </div>

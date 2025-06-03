@@ -277,4 +277,20 @@ router.get('/admin/logs', async (req: Request, res: Response, next: NextFunction
     }
 });
 
+// GET Bitacora Logs from View
+router.get('/admin/log-view', async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+        await poolConnect;
+        const request = pool.request();
+        // Simple select from the view, you can add pagination/filtering later if needed
+        const result = await request.query<LogEntry>('SELECT * FROM vw_bitacora_log_full ORDER BY fecha_operacion DESC');
+        res.status(200).json(result.recordset);
+    } catch (err) {
+        console.error('Error fetching logs from view:', (err as Error).message);
+        if (!res.headersSent) {
+            res.status(500).json({ message: 'Failed to fetch system logs from view.' });
+        }
+    }
+});
+
 export default router;

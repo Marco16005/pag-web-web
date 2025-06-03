@@ -530,13 +530,31 @@ BEGIN
             '. Nombre: ' + ISNULL(d.nombre_usuario, 'N/A') + ' -> ' + ISNULL(i.nombre_usuario, 'N/A') +
             '. Correo: ' + ISNULL(d.correo, 'N/A') + ' -> ' + ISNULL(i.correo, 'N/A') +
             '. Rol: ' + ISNULL(d.rol, 'N/A') + ' -> ' + ISNULL(i.rol, 'N/A'),
-            @v_tipo_operacion,
-            (SELECT d.* FOR JSON PATH, WITHOUT_ARRAY_WRAPPER), 
-            (SELECT i.* FOR JSON PATH, WITHOUT_ARRAY_WRAPPER)
+            @v_tipo_operacion, -- Added missing tipo_operacion
+            (SELECT d.* FOR JSON PATH, WITHOUT_ARRAY_WRAPPER), -- datos_viejos
+            (SELECT i.* FOR JSON PATH, WITHOUT_ARRAY_WRAPPER)  -- datos_nuevos
         FROM inserted i
         INNER JOIN deleted d ON i.id_usuario = d.id_usuario; 
     END
 END;
+GO
+
+-- View for Bitacora Log
+CREATE OR ALTER VIEW vw_bitacora_log_full
+AS
+SELECT
+    id_log,
+    nombre_tabla_afectada,
+    id_registro_afectado,
+    nombre_usuario_modificador,
+    pantalla_origen,
+    descripcion_accion,
+    tipo_operacion,
+    fecha_operacion,
+    estatus_operacion,
+    datos_viejos,
+    datos_nuevos
+FROM bitacora_log;
 GO
 
 -- POPULATE TEST DATA --
