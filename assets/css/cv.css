@@ -38,7 +38,7 @@
 }
 
 .modal-content.cv-modal-content { /* Added specificity */
-    color: #f0f0f0; /* Light text for modal */
+    color: #000000; 
     margin: 5% auto;
     padding: 25px;
     border: 1px solid #888;
