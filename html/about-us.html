@@ -34,26 +34,31 @@
                         <img src="../assets/images/team1.png" alt="Team Member 1" class="w-im rounded-full mx-auto logo2">
                         <p class="mt-4 font-bold">David</p>
                         <p class="text-gray-400">Game Developer</p>
+                        <button class="btn-secondary view-cv-btn mt-2" data-member="david">View CV</button>
                     </div>
                     <div>
                         <img src="../assets/images/team2.png" alt="Team Member 2" class="w-im rounded-full mx-auto logo2">
                         <p class="mt-4 font-bold">Marco</p>
                         <p class="text-gray-400">Web Developer</p>
+                        <button class="btn-secondary view-cv-btn mt-2" data-member="marco">View CV</button>
                     </div>
                     <div>
                         <img src="../assets/images/team3.png" alt="Team Member 3" class="w-im rounded-full mx-auto logo2">
                         <p class="mt-4 font-bold">Gustavo</p>
                         <p class="text-gray-400">Game Developer</p>
+                        <button class="btn-secondary view-cv-btn mt-2" data-member="gustavo">View CV</button>
                     </div>
                     <div class="col-span-1">
                         <img src="../assets/images/team4.png" alt="Team Member 4" class="w-im rounded-full mx-auto logo2">
                         <p class="mt-4 font-bold">Enzo</p>
                         <p class="text-gray-400">Game Developer</p>
+                        <button class="btn-secondary view-cv-btn mt-2" data-member="enzo">View CV</button>
                     </div>
                     <div class="col-span-1">
                         <img src="../assets/images/team5.png" alt="Team Member 5" class="w-im rounded-full mx-auto logo2">
                         <p class="mt-4 font-bold">Angel</p>
                         <p class="text-gray-400">Project Manager</p>
+                        <button class="btn-secondary view-cv-btn mt-2" data-member="angel">View CV</button>
                     </div>
                 </div>
             </div>
@@ -105,7 +110,31 @@
                 <p class="mx-auto ">'Campus Chaos' plunges players into the heart of Tecnológico de Monterrey, now overrun by unexpected threats. As a student, you'll navigate familiar yet transformed locations, from lecture halls taken over by hostile entities to libraries hiding secret passages. The game combines elements of action, adventure, and puzzle-solving. Players can choose from unique characters like Tomas, Emma, and Teus, each with special abilities. Complete missions, gather resources, upgrade your gear, and team up with other students (or go solo) to uncover the source of the chaos and reclaim your campus. Expect a blend of humor, suspense, and challenging gameplay that will keep you on your toes!</p>
             </div>
         </div>
+
+        <div class="marg" style="padding-top: 6rem; padding-bottom: 4rem; text-align: center;">
+            <h2 class="text-4xl font-bold mb-4 pixel-font">Technologies We Use</h2>
+            <p class="max-w-3xl mx-auto">
+                This website is built using a robust stack of modern web technologies to ensure a seamless and interactive user experience.
+                The frontend is crafted with <strong>HTML5</strong>, styled with <strong>CSS3</strong> (including utility-first framework concepts and custom styles), and brought to life with <strong>JavaScript (ES6+)</strong>.
+                For the backend, we utilize <strong>Node.js</strong> with the <strong>Express.js</strong> framework to handle server-side logic and API requests.
+                Our database is powered by <strong>Microsoft SQL Server</strong>, ensuring reliable data storage and retrieval.
+                The development process is supported by tools like <strong>TypeScript</strong> for enhanced JavaScript development, version control with <strong>Git/GitHub</strong>, and various libraries and APIs for specific functionalities like the AI chat widget and dynamic content loading.
+            </p>
+        </div>
     </section>
+
+    <!-- CV Modal Structure -->
+    <div id="cvModal" class="modal" style="display:none;">
+        <div class="modal-content cv-modal-content">
+            <span class="close-modal-btn" id="closeCvModal">&times;</span>
+            <h3 id="cvModalName" class="pixel-font"></h3>
+            <p id="cvModalRole" class="text-gray-500 mb-4"></p>
+            <div id="cvModalDetails" class="text-left">
+                <!-- CV details will be injected here by JavaScript -->
+            </div>
+        </div>
+    </div>
+
 </main>
 
 <div id="footer-placeholder"></div>
