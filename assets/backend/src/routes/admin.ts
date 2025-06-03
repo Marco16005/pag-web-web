@@ -49,6 +49,22 @@ interface LogEntry {
     datos_nuevos: string | null; 
 }
 
+// Interface new vw_user_action_summary_log
+interface UserActionSummaryLogEntry {
+    id_log: number;
+    action_timestamp: Date;
+    operation_type: string;
+    table_affected: string;
+    action_summary: string | null;
+    full_action_description: string | null;
+    raw_modifier_identity: string | null;
+    modifier_app_username: string | null;
+    modifier_app_email: string | null;
+    affected_entity_name: string | null;
+    affected_record_id: string | null;
+    operation_status: string | null;
+}
+
 interface ProcedureStatusResult {
     status: 'OK' | 'NOT_FOUND' | 'NO_DELETE_LAST_ADMIN' | 'EMAIL_EXISTS' | 'USERNAME_EXISTS' | 'CANNOT_DEMOTE_LAST_ADMIN' | string;
 }
@@ -289,6 +305,21 @@ router.get('/admin/log-view', async (req: Request, res: Response, next: NextFunc
         console.error('Error fetching logs from view:', (err as Error).message);
         if (!res.headersSent) {
             res.status(500).json({ message: 'Failed to fetch system logs from view.' });
+        }
+    }
+});
+
+router.get('/admin/log-view', async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+        await poolConnect;
+        const request = pool.request();
+        // Query the new view
+        const result = await request.query<UserActionSummaryLogEntry>('SELECT * FROM vw_user_action_summary_log ORDER BY action_timestamp DESC');
+        res.status(200).json(result.recordset);
+    } catch (err) {
+        console.error('Error fetching logs from user action summary view:', (err as Error).message);
+        if (!res.headersSent) {
+            res.status(500).json({ message: 'Failed to fetch system logs from user action summary view.' });
         }
     }
 });

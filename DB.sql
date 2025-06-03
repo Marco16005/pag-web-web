@@ -557,6 +557,34 @@ SELECT
 FROM bitacora_log;
 GO
 
+-- New View for User Action Summary Log
+CREATE OR ALTER VIEW vw_user_action_summary_log
+AS
+SELECT
+    bl.id_log,
+    bl.fecha_operacion AS action_timestamp,
+    bl.tipo_operacion AS operation_type,
+    bl.nombre_tabla_afectada AS table_affected,
+    SUBSTRING(bl.descripcion_accion, 1, 150) AS action_summary, -- Shorter summary
+    bl.descripcion_accion AS full_action_description, -- For modal
+    bl.nombre_usuario_modificador AS raw_modifier_identity, -- Raw value from log
+    modifier_user.nombre_usuario AS modifier_app_username,
+    modifier_user.correo AS modifier_app_email,
+    CASE
+        WHEN bl.nombre_tabla_afectada = 'usuarios' AND TRY_CAST(bl.id_registro_afectado AS INT) IS NOT NULL
+        THEN affected_user.nombre_usuario
+        ELSE NULL
+    END AS affected_entity_name, -- e.g., name of the user whose record was changed
+    bl.id_registro_afectado AS affected_record_id,
+    bl.estatus_operacion AS operation_status
+FROM
+    bitacora_log bl
+LEFT JOIN
+    usuarios modifier_user ON bl.nombre_usuario_modificador = modifier_user.nombre_usuario -- Assumes nombre_usuario_modificador stores an app username
+LEFT JOIN
+    usuarios affected_user ON bl.nombre_tabla_afectada = 'usuarios' AND TRY_CAST(bl.id_registro_afectado AS INT) = affected_user.id_usuario;
+GO
+
 -- POPULATE TEST DATA --
 
 -- Call registrar_usuario to create users (this will also populate estadisticas and leaderboard)

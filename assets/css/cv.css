@@ -1,0 +1,98 @@
+.btn-primary:hover {
+    background-color: #FF6200; /* Darker orange for hover */
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    display: inline-block;
+    background-color: #6c757d; /* Bootstrap secondary color */
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border-radius: 5px;
+    text-decoration: none;
+    font-family: 'Press Start 2P', monospace; /* Pixel font */
+    font-size: 0.8rem;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+    transform: translateY(-2px);
+}
+
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1051; /* Sit on top, higher than chat widget icon */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
+    padding-top: 60px;
+}
+
+.modal-content.cv-modal-content { /* Added specificity */
+    background-color: #2c2c2c; /* Dark background for modal */
+    color: #f0f0f0; /* Light text for modal */
+    margin: 5% auto;
+    padding: 25px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 10px;
+    position: relative;
+    font-family: 'Open Sans', sans-serif; /* More readable font for CV details */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+}
+
+.modal-content.cv-modal-content .pixel-font {
+    font-family: 'Press Start 2P', monospace; 
+    color: #ffc107;
+}
+
+.modal-content.cv-modal-content .text-gray-500 {
+    color: #adb5bd !important; /* Lighter gray for role */
+}
+
+.modal-content.cv-modal-content .text-left {
+    text-align: left;
+}
+
+.modal-content.cv-modal-content ul {
+    list-style-type: disc;
+    padding-left: 20px;
+}
+.modal-content.cv-modal-content ul li {
+    margin-bottom: 8px;
+}
+
+
+.close-modal-btn {
+    color: #aaa;
+    float: right;
+    font-size: 32px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+
+.close-modal-btn:hover,
+.close-modal-btn:focus {
+    color: #ffc107; /* Highlight color on hover */
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.w-im {
+  width: 150px; 
+  height: 150px; 
+  object-fit: cover;
+}

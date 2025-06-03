@@ -426,15 +426,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- System Logs (Bitacora via View) ---
     async function fetchAndDisplayLogViewData() {
         if (!logViewTableBody) return;
-        logViewTableBody.innerHTML = '<tr><td colspan="11">Loading system logs from view...</td></tr>';
+        logViewTableBody.innerHTML = '<tr><td colspan="10">Loading user action summary logs...</td></tr>'; // Updated colspan
         try {
-            const response = await fetch(`${API_BASE_URL}/admin/log-view`); // New endpoint
+            const response = await fetch(`${API_BASE_URL}/admin/log-view`); 
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             const logs = await response.json();
             renderLogViewTable(logs);
         } catch (error) {
-            console.error('Failed to fetch system logs from view:', error);
-            logViewTableBody.innerHTML = `<tr><td colspan="11">Failed to load system logs from view: ${error.message}</td></tr>`;
+            console.error('Failed to fetch user action summary logs:', error);
+            logViewTableBody.innerHTML = `<tr><td colspan="10">Failed to load user action summary logs: ${error.message}</td></tr>`; // Updated colspan
         }
     }
 
@@ -442,49 +442,44 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!logViewTableBody) return;
         logViewTableBody.innerHTML = '';
         if (!logs || logs.length === 0) {
-            logViewTableBody.innerHTML = '<tr><td colspan="11">No system logs found in view.</td></tr>';
+            logViewTableBody.innerHTML = '<tr><td colspan="10">No user action summary logs found.</td></tr>'; // Updated colspan
             return;
         }
         logs.forEach(log => {
             const row = logViewTableBody.insertRow();
             row.insertCell().textContent = log.id_log;
-            row.insertCell().textContent = log.nombre_tabla_afectada;
-            row.insertCell().textContent = log.id_registro_afectado || 'N/A';
-            row.insertCell().textContent = log.nombre_usuario_modificador || 'N/A';
-            row.insertCell().textContent = log.pantalla_origen || 'N/A';
+            row.insertCell().textContent = new Date(log.action_timestamp).toLocaleString();
+            row.insertCell().textContent = log.operation_type;
+            row.insertCell().textContent = log.table_affected;
             
-            const descCell = row.insertCell();
-            const fullDesc = log.descripcion_accion || 'N/A';
-            descCell.textContent = fullDesc.length > 70 ? fullDesc.substring(0, 70) + '...' : fullDesc;
-            descCell.classList.add('log-action-desc-clickable');
-            descCell.dataset.fullDescription = fullDesc;
-            descCell.title = "Click to see full description";
+            const summaryCell = row.insertCell();
+            summaryCell.textContent = log.action_summary || 'N/A';
+            // Make cell clickable for full description, using full_action_description
+            summaryCell.classList.add('log-action-desc-clickable');
+            summaryCell.dataset.fullDescription = log.full_action_description || log.action_summary || 'N/A';
+            summaryCell.title = "Click to see full description";
 
-            row.insertCell().textContent = log.tipo_operacion;
-            row.insertCell().textContent = new Date(log.fecha_operacion).toLocaleString();
-            row.insertCell().textContent = log.estatus_operacion || 'N/A';
-
-            const oldDataCell = row.insertCell();
-            const oldDataDiv = document.createElement('div');
-            oldDataDiv.classList.add('json-data-log');
-            try {
-                oldDataDiv.textContent = log.datos_viejos ? JSON.stringify(JSON.parse(log.datos_viejos), null, 2) : 'N/A';
-            } catch { oldDataDiv.textContent = log.datos_viejos || 'N/A'; }
-            oldDataCell.appendChild(oldDataDiv);
-            
-            const newDataCell = row.insertCell();
-            const newDataDiv = document.createElement('div');
-            newDataDiv.classList.add('json-data-log');
-            try {
-                newDataDiv.textContent = log.datos_nuevos ? JSON.stringify(JSON.parse(log.datos_nuevos), null, 2) : 'N/A';
-            } catch { newDataDiv.textContent = log.datos_nuevos || 'N/A'; }
-            newDataCell.appendChild(newDataDiv);
+            row.insertCell().textContent = log.modifier_app_username || log.raw_modifier_identity || 'N/A';
+            row.insertCell().textContent = log.modifier_app_email || 'N/A';
+            row.insertCell().textContent = log.affected_entity_name || 'N/A';
+            row.insertCell().textContent = log.affected_record_id || 'N/A';
+            row.insertCell().textContent = log.operation_status || 'N/A';
         });
     }
 
     // Event listener for clickable log descriptions
     if (logsTableBody) {
         logsTableBody.addEventListener('click', (event) => {
+            const targetCell = event.target.closest('td.log-action-desc-clickable');
+            if (targetCell && logDetailModal && logDetailContent) {
+                logDetailContent.textContent = targetCell.dataset.fullDescription || "No description available.";
+                logDetailModal.style.display = 'block';
+            }
+        });
+    }
+
+    if (logViewTableBody) {
+        logViewTableBody.addEventListener('click', (event) => {
             const targetCell = event.target.closest('td.log-action-desc-clickable');
             if (targetCell && logDetailModal && logDetailContent) {
                 logDetailContent.textContent = targetCell.dataset.fullDescription || "No description available.";
