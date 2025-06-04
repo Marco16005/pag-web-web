@@ -151,11 +151,11 @@ router.post('/register', registerLimiter, async (
     res.status(400).json({ message: "Invalid birth date provided.", field: "birthdate" });
     return;
   }
-  if (age < 10) {
-    res.status(400).json({ message: "You must be at least 10 years old to register.", field: "birthdate" });
+  if (age < 13) {
+    res.status(400).json({ message: "You must be at least 13 years old to register.", field: "birthdate" });
     return;
   }
-   if (age > 120) { // Sanity check for max age
+   if (age > 100) { // Sanity check for max age
     res.status(400).json({ message: "Invalid birth date (too old).", field: "birthdate" });
     return;
   }
@@ -174,19 +174,19 @@ router.post('/register', registerLimiter, async (
     const registrationStatus = result.recordset[0]?.status;
 
     if (registrationStatus === 'EXISTE') {
-      res.status(409).json({ message: "This email is already registered.", field: "correo" });
+      res.status(409).json({ message: "This email is already registered.", field: "email" });
       return;
     }
     if (registrationStatus === 'USERNAME_EXISTS') {
-        res.status(409).json({ message: "This username is already taken.", field: "nombre_usuario" });
-        return;
+      res.status(409).json({ message: "This username is already taken.", field: "fullname" });
+      return;
     }
-    if (registrationStatus === 'AGE_BELOW_MINIMUM') { 
-        res.status(400).json({ message: "You must be at least 10 years old to register.", field: "birthdate" });
-        return;
+    if (registrationStatus === 'AGE_BELOW_MINIMUM') {
+      res.status(400).json({ message: "You must be at least 13 years old to register.", field: "birthdate" });
+      return;
     }
     if (registrationStatus === 'OK') {
-        res.status(201).json({ message: "User registered successfully." });
+      res.status(201).json({ message: "User registered successfully!" });
     } else {
         console.error("Unexpected registration status from DB:", registrationStatus);
         res.status(500).json({ message: "Registration failed due to a database error." });

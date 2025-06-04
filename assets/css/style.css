@@ -770,3 +770,32 @@ h4 {
     margin-top: 0 !important;
     margin-bottom: 0 !important;
 }
+
+.profile-page-body .hero.small-hero .hero-content h1.pixel-title {
+    font-size: 2.5rem; 
+}
+
+/* Back to Top Button */
+#backToTopBtn {
+    display: none; /* Hidden by default */
+    position: fixed;
+    bottom: 20px;
+    right: 30px;
+    z-index: 1050;
+    border: none;
+    outline: none;
+    background-color: #FFC857; /* Primary button color */
+    color: black;
+    cursor: pointer;
+    padding: 12px 15px;
+    border-radius: 50%; /* Circular button */
+    font-size: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transition: background-color 0.3s, opacity 0.3s, transform 0.2s;
+    font-family: Arial, sans-serif; 
+}
+
+#backToTopBtn:hover {
+    background-color: #FFB700; /* Darker shade on hover */
+    transform: translateY(-2px);
+}

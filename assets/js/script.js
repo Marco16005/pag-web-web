@@ -236,4 +236,26 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // Back to Top Button Functionality
+    const backToTopButton = document.createElement('button');
+    backToTopButton.id = 'backToTopBtn';
+    backToTopButton.title = 'Go to top';
+    backToTopButton.innerHTML = '&#8679;'; // Upwards arrow
+    document.body.appendChild(backToTopButton);
+
+    const scrollFunction = () => {
+        if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+            backToTopButton.style.display = "block";
+        } else {
+            backToTopButton.style.display = "none";
+        }
+    };
+
+    window.onscroll = scrollFunction;
+
+    backToTopButton.addEventListener('click', () => {
+        window.scrollTo({top: 0, behavior: 'smooth'});
+    });
+
 });

@@ -125,7 +125,10 @@ CREATE OR ALTER PROCEDURE registrar_usuario
     @p_fecha_nacimiento DATE
 AS
 BEGIN
-    IF DATEDIFF(year, @p_fecha_nacimiento, GETDATE()) < 10
+    SET NOCOUNT ON;
+
+    -- Validar edad mínima (13 años)
+    IF DATEDIFF(year, @p_fecha_nacimiento, GETDATE()) < 13
     BEGIN
         SELECT 'AGE_BELOW_MINIMUM' AS status;
         RETURN;
@@ -193,6 +196,7 @@ BEGIN
         RETURN;
     END
 
+    -- Verificar si es el último administrador
     IF @v_rol = 'admin'
     BEGIN
         SELECT @v_admin_count = COUNT(*) FROM usuarios WHERE rol = 'admin';

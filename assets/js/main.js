@@ -136,15 +136,15 @@ function setupRegisterForm() {
             isValid = false;
         } else {
             const age = calculateAge(fecha_nacimiento);
-            if (isNaN(age)) { 
-                 if (window.showError) window.showError(birthdateInput, "Invalid birth date. Please enter a valid date.");
-                 isValid = false;
-            } else if (age < 10) {
-                if (window.showError) window.showError(birthdateInput, "You must be at least 10 years old to create an account.");
+            if (isNaN(age)) {
+                if (window.showError) window.showError(birthdateInput, "Invalid birth date format.");
                 isValid = false;
-            } else if (age > 120) { 
-                 if (window.showError) window.showError(birthdateInput, "Please enter a valid birth year.");
-                 isValid = false;
+            } else if (age < 13) {
+                if (window.showError) window.showError(birthdateInput, "You must be at least 13 years old to register.");
+                isValid = false;
+            } else if (age > 100) { // Sanity check
+                if (window.showError) window.showError(birthdateInput, "Invalid birth date (too old).");
+                isValid = false;
             }
         }
     }
