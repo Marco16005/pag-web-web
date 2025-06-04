@@ -780,7 +780,7 @@ h4 {
     display: none; /* Hidden by default */
     position: fixed;
     bottom: 20px;
-    right: 30px;
+    right: 95px;
     z-index: 1050;
     border: none;
     outline: none;
