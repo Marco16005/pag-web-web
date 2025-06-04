@@ -779,7 +779,7 @@ h4 {
 #backToTopBtn {
     display: none; /* Hidden by default */
     position: fixed;
-    bottom: 20px;
+    bottom: 25px;
     right: 95px;
     z-index: 1050;
     border: none;
