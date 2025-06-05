@@ -63,8 +63,8 @@
 
 <script>
 // Mostrar datos del usuario en el perfil
-document.addEventListener('DOMContentLoaded', async () => { // Made async
-  const userData = JSON.parse(localStorage.getItem('user'));
+document.addEventListener('DOMContentLoaded', async () => { 
+  const userData = JSON.parse(sessionStorage.getItem('user')); 
   if (!userData) {
     alert("You must be logged in to view your profile.");
     window.location.href = "login.html";

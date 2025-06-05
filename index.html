@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (downloadGameLinkIndex) {
         downloadGameLinkIndex.addEventListener('click', (event) => {
-            const userData = JSON.parse(localStorage.getItem('user'));
+            const userData = JSON.parse(sessionStorage.getItem('user'));
             if (userData) {
                 // User is logged in, redirect to profile download section
                 window.location.href = 'html/profile.html#download-game-section';

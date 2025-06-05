@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const userData = JSON.parse(localStorage.getItem("user"));
+    const userData = JSON.parse(sessionStorage.getItem("user")); 
     const targetPlaceholder = document.getElementById("header-placeholder");
 
     if (!targetPlaceholder) {

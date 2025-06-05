@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const userData = JSON.parse(localStorage.getItem('user'));
+    const userData = JSON.parse(sessionStorage.getItem('user'));
 
     // Admin Route Protection
     if (!userData) {

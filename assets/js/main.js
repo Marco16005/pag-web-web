@@ -24,12 +24,12 @@ window.API_URL = '/api'; // Use relative path for API calls
 
 // Guardar usuario en localStorage
 function saveUserSession(user) { // user is the object { id, nombre, correo, rol }
-  localStorage.setItem('user', JSON.stringify(user));
+  sessionStorage.setItem('user', JSON.stringify(user)); 
 }
 
 // Eliminar sesión
 function logoutUser() {
-  localStorage.removeItem('user');
+  sessionStorage.removeItem('user'); 
   window.location.reload();
 }
 
