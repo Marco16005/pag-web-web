@@ -17,7 +17,7 @@
             margin-bottom: 1.5rem; 
         }
         .play-online-header h3 { 
-            color: #333; /* Will be styled by .pixel-font from style.css */
+            color: #333; 
         }
         .play-online-header .play-instructions {
             font-family: 'Open Sans', sans-serif;
@@ -30,22 +30,22 @@
 
         /* Game Area Wrapper - Controls width and centering of the game container */
         .game-area-wrapper {
-            width: 100%; /* Takes full width of its parent (.containerb) */
-            max-width: 1800px; /* Max desired width for the game area */
+            width: 100%; 
+            max-width: 1800px; 
             margin-left: auto;
             margin-right: auto;
             margin-bottom: 3rem; 
         }
 
         .game-container { /* For desktop view */
-            width: 100%;  /* Fills .game-area-wrapper */
-            height: 85vh;   /* Adjusted height slightly */
-            min-height: 500px; /* Fallback minimum height to prevent 0-size issues */
+            width: 100%;  
+            height: 85vh;   
+            min-height: 500px; /* CRUCIAL: Fallback minimum height to prevent 0-size issues for WebGL */
             max-height: 900px; 
             border: 2px solid #083c79; 
             border-radius: 8px;
             overflow: hidden;
-            display: block; /* Default for desktop */
+            display: block; /* Default for desktop, ensure it's not 'none' when Unity initializes */
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
             box-sizing: border-box; 
         }
@@ -57,8 +57,8 @@
         }
 
         .mobile-game-message { /* For mobile/tablet view */
-            display: none; /* Hidden by default */
-            width: 90%; /* Relative to its parent .game-area-wrapper */
+            display: none; 
+            width: 90%; 
             max-width: 600px; 
             margin: 2rem auto;
             padding: 20px;
@@ -77,88 +77,62 @@
         /* Media Query for switching game and message visibility */
         @media (max-width: 1023px) { /* Tablet and below */
             .game-area-wrapper {
-                 width: 90%; /* If .containerb is full width on tablet, this constrains game-area-wrapper */
+                 width: 90%; 
             }
             .game-container {
-                display: none;
+                display: none; /* This hides the game on smaller screens */
             }
             .mobile-game-message {
                 display: block; 
             }
         }
 
-        /* Download Section - Relies on .form-card from style.css */
         #download-game-section {
-            margin-top: 0; /* Spacing handled by .game-area-wrapper's bottom margin */
+            margin-top: 0; 
             margin-bottom: 5rem; 
         }
 
-        /* Responsive adjustments for smaller screens */
         @media (max-width: 767px) { /* Mobile */
             .game-area-wrapper { 
-                width: 100%; /* Allow mobile message to use more space */
-                padding-left: 10px; /* Prevent content from touching screen edges */
+                width: 100%; 
+                padding-left: 10px; 
                 padding-right: 10px;
                 box-sizing: border-box;
             }
-            .play-online-header h3 {
-                font-size: 1.5rem; 
-            }
-            .play-online-header .play-instructions {
-                font-size: 0.9rem;
-            }
-            .mobile-game-message {
-                padding: 15px;
-                width: 100%; /* Fills its padded parent .game-area-wrapper */
-            }
-            #download-game-section {
-                 padding: 1.5rem; /* Override form-card padding if needed */
-            }
-            #download-game-section h3 {
-                font-size: 1.3rem; 
-            }
+            .play-online-header h3 { font-size: 1.5rem; }
+            .play-online-header .play-instructions { font-size: 0.9rem; }
+            .mobile-game-message { padding: 15px; width: 100%; }
+            #download-game-section { padding: 1.5rem; }
+            #download-game-section h3 { font-size: 1.3rem; }
             #download-game-section .btn-primary {
-                padding: 0.7rem 1rem;
-                font-size: 0.9rem;
-                width: 100%; 
-                max-width: 280px; 
-                margin-left: auto;
-                margin-right: auto;
-                display: block; 
+                padding: 0.7rem 1rem; font-size: 0.9rem;
+                width: 100%; max-width: 280px; 
+                margin-left: auto; margin-right: auto; display: block; 
             }
         }
 
         @media (max-width: 480px) { /* Smaller mobile */
-            .play-online-header h3 {
-                font-size: 1.3rem;
-            }
-            #download-game-section h3 {
-                font-size: 1.2rem;
-            }
-            #download-game-section .btn-primary {
-                padding: 0.6rem 0.8rem;
-                font-size: 0.85rem;
-            }
+            .play-online-header h3 { font-size: 1.3rem; }
+            #download-game-section h3 { font-size: 1.2rem; }
+            #download-game-section .btn-primary { padding: 0.6rem 0.8rem; font-size: 0.85rem; }
         }
-        
+
+        /* Hero Title Styling - Placed here for high specificity within this page */
         section.hero.small-hero .hero-content h1.pixel-title {
-            font-size: 2.5rem !important;  /* Default desktop size, !important to override */
-            color: #FFD700 !important;     /* Explicit gold color, !important */
+            font-size: 2.5rem !important;
+            color: #FFD700 !important;
             text-shadow: 
-                2px 2px 0px #000000, 
-                -2px -2px 0px #000000, 
-                2px -2px 0px #000000, 
-                -2px 2px 0px #000000,
+                2px 2px 0px #000000, -2px -2px 0px #000000, 
+                2px -2px 0px #000000, -2px 2px 0px #000000,
                 0 0 10px rgba(0,0,0,0.7) !important;
             position: relative !important; 
             z-index: 5 !important;        
             visibility: visible !important; 
             display: block !important;   
         }
-        /* Responsive hero title for this page */
         @media (max-width: 768px) {
             section.hero.small-hero .hero-content h1.pixel-title {
-                font-size: 1.8rem !important; /* Match styler.css responsive hero title */
+                font-size: 1.8rem !important; 
             }
         }
     </style>
@@ -166,56 +140,49 @@
 <body class="profile-page-body">
     <div id="header-placeholder"></div>
 
-    <section class="hero small-hero marg">
-        <div class="hero-overlay"></div>
-        <div class="hero-content container">
-            <h1 class="pixel-title">Play Campus Chaos</h1>
+    <section class="section containerb marg1"> 
+        <div class="play-online-header">
+            <h3 class="text-2xl mb-2 pixel-font">Play Online (WebGL)</h3>
+            <p class="play-instructions">Click the game window below to start. You might need to allow a few moments for it to load.</p>
+        </div>
+
+        <div class="game-area-wrapper">
+            <div class="game-container">
+                <iframe src="../assets/game/Campus_web/index.html" title="Campus Chaos WebGL Game"></iframe>
+            </div>
+            <div class="mobile-game-message">
+                <p>The online version of Campus Chaos is best experienced on a PC.</p>
+                <p>Please visit this page on a desktop or laptop to play directly in your browser, or download the game for Windows below.</p>
+            </div>
+        </div>
+
+        <div id="download-game-section" class="form-card text-center"> 
+            <h3 class="text-2xl mb-4 pixel-font">Download for Windows (.exe)</h3>
+            <p class="mb-4" style="font-family: Arial, sans-serif;">Prefer to play offline? Get the latest version of Campus Chaos for your Windows PC!</p>
+            <a href="../assets/game/Video Game.exe" download="CampusChaos.exe" class="btn-primary"> 
+                Download CampusChaos.exe
+            </a>
+            <p class="text-sm mt-4" style="font-family: Arial, sans-serif;">(Version 1.0 - Windows)</p>
+            <p class="text-xs mt-2" style="font-family: Arial, sans-serif;">
+                <strong>Note:</strong> This is an executable file for Windows. Your browser or operating system might show a warning before downloading.
+            </p>
         </div>
     </section>
 
-<section class="section containerb marg1"> 
-    <div class="play-online-header">
-        <h3 class="text-2xl mb-2 pixel-font">Play Online (WebGL)</h3>
-        <p class="play-instructions">Click the game window below to start. You might need to allow a few moments for it to load.</p>
-    </div>
-
-    <div class="game-area-wrapper">
-        <div class="game-container">
-            <iframe src="../assets/game/Campus_web/index.html" title="Campus Chaos WebGL Game"></iframe>
-        </div>
-        <div class="mobile-game-message">
-            <p>The online version of Campus Chaos is best experienced on a PC.</p>
-            <p>Please visit this page on a desktop or laptop to play directly in your browser, or download the game for Windows below.</p>
-        </div>
-    </div>
-
-    <div id="download-game-section" class="form-card text-center"> 
-        <h3 class="text-2xl mb-4 pixel-font">Download for Windows (.exe)</h3>
-        <p class="mb-4" style="font-family: Arial, sans-serif;">Prefer to play offline? Get the latest version of Campus Chaos for your Windows PC!</p>
-        <a href="../assets/game/Video Game.exe" download="CampusChaos.exe" class="btn-primary"> 
-            Download CampusChaos.exe
-        </a>
-        <p class="text-sm mt-4" style="font-family: Arial, sans-serif;">(Version 1.0 - Windows)</p>
-        <p class="text-xs mt-2" style="font-family: Arial, sans-serif;">
-            <strong>Note:</strong> This is an executable file for Windows. Your browser or operating system might show a warning before downloading.
-        </p>
-    </div>
-</section>
-
-<div id="footer-placeholder"></div>
-<script src="https://unpkg.com/scrollreveal"></script>
-<script src="../assets/js/main.js"></script>
-<script src="../assets/js/recycled/header.js"></script>
-<script src="../assets/js/script.js"></script>
-<script src="../assets/js/chatWidget.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const userData = JSON.parse(sessionStorage.getItem('user'));
-        if (!userData) {
-            alert("You need to log in to access the game page.");
-            window.location.href = "login.html";
-        }
-    });
-</script>
+    <div id="footer-placeholder"></div>
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/recycled/header.js"></script>
+    <script src="../assets/js/script.js"></script>
+    <script src="../assets/js/chatWidget.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const userData = JSON.parse(sessionStorage.getItem('user'));
+            if (!userData) {
+                alert("You need to log in to access the game page.");
+                window.location.href = "login.html"; 
+            }
+        });
+    </script>
 </body>
 </html>
