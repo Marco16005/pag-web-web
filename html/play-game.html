@@ -14,9 +14,9 @@
         /* Play Online Header (Instructions) */
         .play-online-header {
             text-align: center;
-            margin-bottom: 1.5rem; /* Space before game area */
+            margin-bottom: 1.5rem; 
         }
-        .play-online-header h3 { /* Uses text-2xl, mb-2, pixel-font from style.css */
+        .play-online-header h3 { 
             color: #333; 
         }
         .play-online-header .play-instructions {
@@ -28,17 +28,18 @@
             margin-right: auto;
         }
 
-        /* Game Area Wrapper */
         .game-area-wrapper {
-            margin-bottom: 3rem; /* Space before download section */
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 3rem; 
+            width: 95vw;
+            max-width: 1800px; 
         }
 
         .game-container { /* For desktop view */
-            width: 95vw;   
+            width: 100%;  
             height: 90vh;   
-            max-width: 1800px; 
             max-height: 1000px; 
-            margin: 1rem auto; 
             border: 2px solid #083c79; 
             border-radius: 8px;
             overflow: hidden;
@@ -54,9 +55,9 @@
         }
 
         .mobile-game-message { /* For mobile/tablet view */
-            display: none; /* Hidden by default */
+            display: none; 
             width: 90%;
-            max-width: 600px; /* Max width for the message box */
+            max-width: 600px; 
             margin: 2rem auto;
             padding: 20px;
             background-color: #2d3748;
@@ -72,56 +73,59 @@
         }
 
         /* Media Query for switching game and message visibility */
-        @media (max-width: 1023px) { /* Tablet and below */
+        @media (max-width: 1023px) { 
+            .game-area-wrapper {
+                width: 90%;
+            }
             .game-container {
                 display: none;
             }
             .mobile-game-message {
-                display: block; /* Show message */
+                display: block; 
             }
             .game-area-wrapper {
                 margin-bottom: 2rem;
             }
         }
 
-        /* Download Section - Relies on .form-card from style.css */
         #download-game-section {
-            /* .form-card provides: background, padding, border-radius, shadow, max-width: 600px, margin: 0 auto */
-            /* Overriding top margin as .game-area-wrapper provides spacing */
             margin-top: 0; 
-            margin-bottom: 5rem; /* Keep existing bottom margin */
+            margin-bottom: 5rem; 
         }
-        #download-game-section h3 { /* Uses .pixel-font, .text-2xl, .mb-4 from style.css */
+        #download-game-section h3 { 
             color: #333; 
         }
-        #download-game-section p { /* Uses .mb-4, .text-sm, .mt-4, .text-xs from style.css */
+        #download-game-section p { 
             color: #555;
-            font-family: Arial, sans-serif; /* As per inline style */
+            font-family: Arial, sans-serif; 
         }
-        #download-game-section .btn-primary { /* Uses .btn-primary from style.css */
+        #download-game-section .btn-primary { 
             text-decoration: none; 
         }
 
         /* Responsive adjustments for smaller screens */
         @media (max-width: 767px) { /* Mobile */
+            .game-area-wrapper { 
+                width: 100%; 
+                padding-left: 10px;
+                padding-right: 10px;
+                box-sizing: border-box;
+            }
             .play-online-header h3 {
-                font-size: 1.5rem; /* Tailwind text-xl equivalent */
+                font-size: 1.5rem; 
             }
             .play-online-header .play-instructions {
                 font-size: 0.9rem;
             }
-
             .mobile-game-message {
                 padding: 15px;
+                width: 100%; 
             }
             .mobile-game-message p {
                 font-size: 0.9rem;
             }
-
             #download-game-section {
-                /* .form-card already has responsive padding in styler.css @media (max-width: 600px) */
-                /* We can adjust if needed, or rely on styler.css */
-                 padding: 1.5rem; /* Override form-card padding for this specific section if needed */
+                 padding: 1.5rem; 
             }
             #download-game-section h3 {
                 font-size: 1.3rem; 
@@ -136,7 +140,7 @@
                 max-width: 280px; 
                 margin-left: auto;
                 margin-right: auto;
-                display: block; /* For centering with margin auto */
+                display: block; 
             }
         }
 
@@ -160,7 +164,7 @@
         }
 
         .profile-page-body .hero.small-hero .hero-content h1.pixel-title {
-            font-size: 2.5rem; 
+            font-size: 2.5rem;  
             color: #FFD700;  
             text-shadow: 
                 2px 2px 0px #000000, 
@@ -169,7 +173,14 @@
                 -2px 2px 0px #000000,
                 0 0 10px rgba(0,0,0,0.7);
             position: relative; 
-            z-index: 5;
+            z-index: 5;        
+            visibility: visible !important; 
+            display: block !important;   
+        }
+        @media (max-width: 768px) {
+            .profile-page-body .hero.small-hero .hero-content h1.pixel-title {
+                font-size: 1.8rem !important; 
+            }
         }
     </style>
 </head>
