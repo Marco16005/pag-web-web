@@ -34,21 +34,23 @@
         }
 
         .game-container { /* For desktop view */
-            width: 90vw;    /* 90% of viewport width */
-            height: 80vh;   /* 80% of viewport height */
-            max-width: 1600px; /* Max sensible width */
-            max-height: 900px; /* Max sensible height, helps with aspect ratio on tall screens */
+            width: 95vw;   
+            height: 90vh;   
+            max-width: 1800px; 
+            max-height: 1000px; 
             margin: 1rem auto; 
             border: 2px solid #083c79; 
             border-radius: 8px;
             overflow: hidden;
-            display: block; /* Default for desktop */
+            display: block; 
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-sizing: border-box; 
         }
         .game-container iframe {
             width: 100%;
             height: 100%;
             border: none;
+            display: block; 
         }
 
         .mobile-game-message { /* For mobile/tablet view */
@@ -156,18 +158,30 @@
                 font-size: 0.85rem;
             }
         }
+
+        .profile-page-body .hero.small-hero .hero-content h1.pixel-title {
+            font-size: 2.5rem; 
+            color: #FFD700;  
+            text-shadow: 
+                2px 2px 0px #000000, 
+                -2px -2px 0px #000000, 
+                2px -2px 0px #000000, 
+                -2px 2px 0px #000000,
+                0 0 10px rgba(0,0,0,0.7);
+            position: relative; 
+            z-index: 5;
+        }
     </style>
 </head>
 <body class="profile-page-body">
+    <div id="header-placeholder"></div>
 
-<div id="header-placeholder"></div>
-
-<section class="hero small-hero marg">
-    <div class="hero-overlay"></div>
-    <div class="hero-content container">
-        <h1 class="pixel-title">Play Campus Chaos</h1>
-    </div>
-</section>
+    <section class="hero small-hero marg">
+        <div class="hero-overlay"></div>
+        <div class="hero-content container">
+            <h1 class="pixel-title">Play Campus Chaos</h1>
+        </div>
+    </section>
 
 <section class="section containerb marg1">
     <div class="play-online-header">
