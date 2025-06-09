@@ -53,7 +53,25 @@ app.use('/api', geminiChatRoutes);
 
 const projectRoot = path.join(__dirname, '..', '..', '..');
 
-app.use(express.static(projectRoot));
+// Serve static files with custom header for .br files
+app.use(express.static(projectRoot, {
+  setHeaders: (res, filePath) => {
+    // Check for .br files and set the appropriate Content-Encoding header
+    if (filePath.endsWith('.js.br') || filePath.endsWith('.wasm.br') || filePath.endsWith('.data.br') || filePath.endsWith('.symbols.json.br') || filePath.endsWith('.framework.js.br')) {
+      res.setHeader('Content-Encoding', 'br');
+      // Also, ensure correct Content-Type for common WebGL file types when compressed
+      if (filePath.endsWith('.js.br') || filePath.endsWith('.framework.js.br')) {
+        res.setHeader('Content-Type', 'application/javascript');
+      } else if (filePath.endsWith('.wasm.br')) {
+        res.setHeader('Content-Type', 'application/wasm');
+      } else if (filePath.endsWith('.symbols.json.br')) {
+        res.setHeader('Content-Type', 'application/json');
+      }
+      // For .data.br, Content-Type is often application/octet-stream,
+      // express.static usually infers this correctly if not explicitly set.
+    }
+  }
+}));
 
 app.get('*', (req: Request, res: Response, next: NextFunction) => {
     if (req.path.startsWith('/api/')) { // Don't interfere with API routes
