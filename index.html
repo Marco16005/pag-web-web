@@ -136,14 +136,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (downloadGameLinkIndex) {
         downloadGameLinkIndex.addEventListener('click', (event) => {
+            event.preventDefault(); // Prevent default link behavior first
             const userData = JSON.parse(sessionStorage.getItem('user'));
             if (userData) {
-                // User is logged in, redirect to profile download section
-                window.location.href = 'html/profile.html#download-game-section';
+                // User is logged in, redirect to the new play-game page
+                window.location.href = 'html/play-game.html';
             } else {
-                // User is not logged in, show message
-                event.preventDefault(); // Prevent default link behavior
-                alert('You need to log in first to download the game!');
+                // User is not logged in, redirect to login page
+                alert('You need to log in first to access the game page!');
+                window.location.href = 'html/login.html';
             }
         });
     }
